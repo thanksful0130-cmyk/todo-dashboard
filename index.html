@@ -294,6 +294,90 @@
   }
 
   .empty-row td { color: var(--text-faint); font-style: italic; font-size: 12px; text-align: center; padding: 1.5rem; }
+
+  /* ===== モバイル：カード型レイアウト ===== */
+  @media (max-width: 640px) {
+    header { padding: 0 1rem; }
+    .container { padding: 1rem; }
+    .file-picker { padding: 1rem; }
+    .file-picker h2 { font-size: 11px; }
+
+    /* テーブルヘッダーを非表示 */
+    .data-table thead { display: none; }
+
+    /* tbody全体をブロックに */
+    .data-table tbody { display: block; }
+
+    /* 各行をカードに */
+    .data-table tr {
+      display: block;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      position: relative;
+    }
+    .data-table tr:last-child { border-bottom: none; }
+    .data-table tr.empty-row { display: block; }
+
+    /* 各セルを横並びラベル付きに */
+    .data-table td {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 3px 0;
+      border-bottom: none;
+      font-size: 13px;
+      width: 100%;
+    }
+
+    /* data-labelをラベルとして表示 */
+    .data-table td[data-label]::before {
+      content: attr(data-label);
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      min-width: 56px;
+      flex-shrink: 0;
+      padding-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* 削除ボタン列 */
+    .data-table td:last-child {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 6px;
+      width: 100%;
+    }
+    .data-table td:last-child::before { display: none; }
+    .data-table td:last-child[data-label]::before { display: none; }
+
+    /* input/textarea をフル幅に */
+    .data-table td input,
+    .data-table td textarea {
+      font-size: 13px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* アクションバー */
+    .actions-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .actions-bar .btn {
+      text-align: center;
+      padding: 10px;
+    }
+
+    /* モーダル */
+    .modal-box { width: 95%; max-height: 90vh; }
+    .modal-body textarea { min-height: 200px; font-size: 11px; }
+    .modal-footer { flex-direction: column; align-items: stretch; gap: 8px; }
+    .modal-footer .btn { text-align: center; }
+  }
 </style>
 </head>
 <body>
@@ -512,9 +596,9 @@ function renderRows(key, sec) {
       const val = row[ci] || '';
       if (h === '優先度') {
         const cls = val.includes('高') ? 'p-high' : val.includes('中') ? 'p-mid' : 'p-low';
-        return `<td><input value="${escHtml(val)}" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)"></td>`;
+        return `<td data-label="${escHtml(h)}"><input value="${escHtml(val)}" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)"></td>`;
       }
-      return `<td><textarea rows="1" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)" oninput="autoResize(this)">${escHtml(val)}</textarea></td>`;
+      return `<td data-label="${escHtml(h)}"><textarea rows="1" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)" oninput="autoResize(this)">${escHtml(val)}</textarea></td>`;
     }).join('');
     return `<tr id="row-${key}-${ri}">${cells}<td style="width:32px;padding:6px"><button class="del-btn" onclick="deleteRow('${key}',${ri})" title="削除">×</button></td></tr>`;
   }).join('');

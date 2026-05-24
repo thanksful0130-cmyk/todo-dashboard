@@ -510,14 +510,14 @@ function parseMarkdown(md) {
   const lines = md.split('\n');
   let current = null;
   let tableLines = [];
-  const sectionMap = {
-    '予定': 'schedule',
-    'TODO': 'todo',
-    'おすすめTODO': 'recommended',
-    'フォローアップ': 'followup',
-    '他者サポート': 'support',
-    '信頼度アップTODO': 'trust'
-  };
+const sectionMap = {
+  '予定': 'schedule',
+  'おすすめTODO': 'recommended',  // TODOより先に
+  '信頼度アップTODO': 'trust',    // TODOより先に
+  'TODO': 'todo',                 // 最後
+  'フォローアップ': 'followup',
+  '他者サポート': 'support'
+};
   for (const line of lines) {
     let matched = false;
     if (line.match(/^#{2,3}\s/)) {

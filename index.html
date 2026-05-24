@@ -528,13 +528,14 @@ function parseMarkdown(md) {
   const lines = md.split('\n');
   let current = null;
   let tableLines = [];
-  const sectionMap = {
-    '📅 予定': 'schedule',
-    '✅ TODO': 'todo',
-    '💡 おすすめTODO': 'recommended',
-    '🔁 フォローアップ': 'followup',
-    '🤝 他者サポート': 'support'
-  };
+const sectionMap = {
+  '📅 予定': 'schedule',
+  '✅ TODO': 'todo',
+  '💡 おすすめTODO': 'recommended',
+'🔄 フォローアップ': 'followup',  // 🔁 → 🔄 に変更
+  '🤝 他者サポート': 'support',
+  '🌱 信頼度アップTODO': 'trust'   // ← 追加
+};
   for (const line of lines) {
     let matched = false;
     for (const [k,v] of Object.entries(sectionMap)) {
@@ -565,7 +566,8 @@ const sectionMeta = {
   todo:        { title: '✅ TODO', key: 'todo' },
   recommended: { title: '💡 おすすめTODO', key: 'recommended' },
   followup:    { title: '🔁 フォローアップ', key: 'followup' },
-  support:     { title: '🤝 他者サポート', key: 'support' }
+  support:     { title: '🤝 他者サポート', key: 'support' },
+  trust:       { title: '🌱 信頼度アップTODO', key: 'trust' }  // ← 追加
 };
 
 function renderEditor(data) {

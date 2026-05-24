@@ -301,14 +301,8 @@
     .container { padding: 1rem; }
     .file-picker { padding: 1rem; }
     .file-picker h2 { font-size: 11px; }
-
-    /* テーブルヘッダーを非表示 */
     .data-table thead { display: none; }
-
-    /* tbody全体をブロックに */
     .data-table tbody { display: block; }
-
-    /* 各行をカードに */
     .data-table tr {
       display: block;
       background: var(--surface);
@@ -318,8 +312,6 @@
     }
     .data-table tr:last-child { border-bottom: none; }
     .data-table tr.empty-row { display: block; }
-
-    /* 各セルを横並びラベル付きに */
     .data-table td {
       display: flex;
       align-items: flex-start;
@@ -329,8 +321,6 @@
       font-size: 13px;
       width: 100%;
     }
-
-    /* data-labelをラベルとして表示 */
     .data-table td[data-label]::before {
       content: attr(data-label);
       font-family: 'DM Mono', monospace;
@@ -343,8 +333,6 @@
       padding-top: 4px;
       line-height: 1.4;
     }
-
-    /* 削除ボタン列 */
     .data-table td:last-child {
       display: flex;
       justify-content: flex-end;
@@ -353,16 +341,12 @@
     }
     .data-table td:last-child::before { display: none; }
     .data-table td:last-child[data-label]::before { display: none; }
-
-    /* input/textarea をフル幅に */
     .data-table td input,
     .data-table td textarea {
       font-size: 13px;
       width: 100%;
       min-width: 0;
     }
-
-    /* アクションバー */
     .actions-bar {
       flex-direction: column;
       align-items: stretch;
@@ -371,8 +355,6 @@
       text-align: center;
       padding: 10px;
     }
-
-    /* モーダル */
     .modal-box { width: 95%; max-height: 90vh; }
     .modal-body textarea { min-height: 200px; font-size: 11px; }
     .modal-footer { flex-direction: column; align-items: stretch; gap: 8px; }
@@ -429,7 +411,6 @@
 <script>
 const CLIENT_ID = '342241282955-og8a6tqauudvh0sqkb2vak1u4ckqpbfq.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
-const FOLDER_PATH = 'マイドライブ/Areas/diary/todo';
 const GEMINI_PREFIX = `以下の予定とタスクをGoogle CalendarとGoogle Tasksに登録してください。
 ・予定は日付・時刻・場所を含めて登録してください
 ・TODOはGoogle Tasksにタイトルと期限を設定してください
@@ -529,20 +510,22 @@ function parseMarkdown(md) {
   const lines = md.split('\n');
   let current = null;
   let tableLines = [];
-const sectionMap = {
-  '📅 予定': 'schedule',
-  '✅ TODO': 'todo',
-  '💡 おすすめTODO': 'recommended',
-'🔄 フォローアップ': 'followup',  // 🔁 → 🔄 に変更
-  '🤝 他者サポート': 'support',
-  '🌱 信頼度アップTODO': 'trust'   // ← 追加
-};
+  const sectionMap = {
+    '予定': 'schedule',
+    'TODO': 'todo',
+    'おすすめTODO': 'recommended',
+    'フォローアップ': 'followup',
+    '他者サポート': 'support',
+    '信頼度アップTODO': 'trust'
+  };
   for (const line of lines) {
     let matched = false;
-    for (const [k,v] of Object.entries(sectionMap)) {
-      if (line.includes(k)) {
-        if (current && tableLines.length) sections[current] = parseTable(tableLines);
-        current = v; tableLines = []; matched = true; break;
+    if (line.match(/^#{2,3}\s/)) {
+      for (const [k,v] of Object.entries(sectionMap)) {
+        if (line.includes(k)) {
+          if (current && tableLines.length) sections[current] = parseTable(tableLines);
+          current = v; tableLines = []; matched = true; break;
+        }
       }
     }
     if (!matched && current && line.trim().startsWith('|')) tableLines.push(line);
@@ -566,9 +549,9 @@ const sectionMeta = {
   schedule:    { title: '📅 予定', key: 'schedule' },
   todo:        { title: '✅ TODO', key: 'todo' },
   recommended: { title: '💡 おすすめTODO', key: 'recommended' },
-　followup: { title: '🔄 フォローアップ', key: 'followup' },  // 🔁→🔄
+  followup:    { title: '🔄 フォローアップ', key: 'followup' },
   support:     { title: '🤝 他者サポート', key: 'support' },
-  trust:       { title: '🌱 信頼度アップTODO', key: 'trust' }  // ← 追加
+  trust:       { title: '🌱 信頼度アップTODO', key: 'trust' }
 };
 
 function renderEditor(data) {
@@ -598,7 +581,6 @@ function renderRows(key, sec) {
     const cells = sec.headers.map((h, ci) => {
       const val = row[ci] || '';
       if (h === '優先度') {
-        const cls = val.includes('高') ? 'p-high' : val.includes('中') ? 'p-mid' : 'p-low';
         return `<td data-label="${escHtml(h)}"><input value="${escHtml(val)}" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)"></td>`;
       }
       return `<td data-label="${escHtml(h)}"><textarea rows="1" data-key="${key}" data-row="${ri}" data-col="${ci}" onchange="updateCell(this)" oninput="autoResize(this)">${escHtml(val)}</textarea></td>`;

@@ -113,44 +113,54 @@
   .empty-row td { color: var(--text-faint); font-style: italic; font-size: 12px; text-align: center; padding: 1.5rem; }
 
   /* ===== モバイル：カード型 ===== */
-  @media (max-width: 700px) {
-    header { padding: 0 1rem; }
-    .container { padding: 1rem; }
-    .file-picker { padding: 1rem; }
-    .file-picker h2 { font-size: 11px; }
-    .data-table { table-layout: auto; }
-    .data-table thead { display: none; }
-    .data-table tbody { display: block; }
-    .data-table tr { display: block; background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 12px; }
-    .data-table tr:last-child { border-bottom: none; }
-    .data-table td {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 3px 0;
-  border-bottom: none;
-  font-size: 13px;
-  width: 100%;
-  overflow: hidden;
-}
-    .data-table td[data-label]::before { content: attr(data-label); font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; min-width: 56px; flex-shrink: 0; padding-top: 3px; line-height: 1.4; }
-    .data-table td:last-child { justify-content: flex-end; padding-top: 6px; }
-    .data-table td:last-child::before, .data-table td:last-child[data-label]::before { display: none; }
-.data-table td textarea {
-  font-size: 13px;
-  flex: 1;
-  min-width: 0;
-  width: 0;
-  overflow: hidden;
-}
-    td.prio-cell { display: flex; }
-    .actions-bar { flex-direction: column; align-items: stretch; }
-    .actions-bar .btn { text-align: center; padding: 10px; }
-    .modal-box { width: 95%; max-height: 90vh; }
-    .modal-body textarea { min-height: 200px; font-size: 11px; }
-    .modal-footer { flex-direction: column; align-items: stretch; gap: 8px; }
-    .modal-footer .btn { text-align: center; }
+@media (max-width: 700px) {
+  header { padding: 0 1rem; }
+  .container { padding: 1rem; }
+  .file-picker { padding: 1rem; }
+  .file-picker h2 { font-size: 11px; }
+  .data-table { table-layout: auto; }
+  .data-table thead { display: none; }
+  .data-table tbody { display: block; }
+  .data-table tr {
+    display: block;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 12px;
   }
+  .data-table tr:last-child { border-bottom: none; }
+  .data-table td {
+    display: block;
+    padding: 3px 0 5px 0;
+    border-bottom: none;
+    width: 100%;
+  }
+  .data-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+  .data-table td textarea {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    overflow: hidden;
+  }
+  .data-table td:last-child { text-align: right; padding-top: 4px; }
+  .data-table td:last-child::before { display: none; }
+  td.prio-cell { display: block; }
+  .actions-bar { flex-direction: column; align-items: stretch; }
+  .actions-bar .btn { text-align: center; padding: 10px; }
+  .modal-box { width: 95%; max-height: 90vh; }
+  .modal-body textarea { min-height: 200px; font-size: 11px; }
+  .modal-footer { flex-direction: column; align-items: stretch; gap: 8px; }
+  .modal-footer .btn { text-align: center; }
+}  
 </style>
 </head>
 <body>

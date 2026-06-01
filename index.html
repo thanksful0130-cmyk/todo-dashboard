@@ -382,8 +382,8 @@ function renderRows(key, sec) {
 }
 
 function autoResize(el) {
-  el.style.height = '0';
-  el.style.height = el.scrollHeight + 'px';
+  el.style.height = 'auto';
+  el.style.height = (el.scrollHeight + 2) + 'px';
 }
 function updateCell(el) {
   const { key, row, col } = el.dataset;
